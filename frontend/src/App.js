@@ -1,74 +1,46 @@
-import React from 'react';
 import './App.css';
-import axios from 'axios'
-import UserList from './components/User';
-import MenuList from './components/Menu';
-import FooterList from './components/Footer';
-import ProjectList from './components/Project';
-import TaskList from './components/Task';
+import React from 'react';
+import axios from "axios";
+import { UserList } from "./components/Users";
+import { ProjectList } from "./components/Projects";
+import { TaskList } from "./components/Tasks";
 import { BrowserRouter, Link, Redirect, Route, Switch } from "react-router-dom";
-
+import { ProjectDetail } from "./components/ProjectDetail";
+import UserDetail from "./components/UserDetail";
+import { TaskDetail } from "./components/TaskDetail";
+import { v4 } from 'uuid';
 
 
 class App extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       'users': [],
-      'menu': [],
-      'footer': [],
-      'project': [],
-      'task': []
-    }
+      'tasks': [],
+      'projects': [],
+    };
   }
-
-
-  componentDidMount() {
-    axios.get('http://127.0.0.1:8000/api/users/')
+  _send_axios_get_request(url, state_param) {
+    axios.get(url)
       .then(response => {
-        const users = response.data
-        const projects = response.data
-        const tasks = response.data
+        const object = response.data.results
         this.setState(
           {
-            'users': users,
-            'projects': projects,
-            'tasks': tasks
+            [state_param]: object
           }
         )
       }).catch(error => console.log(error))
-
-    this.state.menu = [
-      {
-        name: 'Elem_1',
-        link: '#'
-      },
-      {
-        name: 'Elem_2',
-        link: '#'
-      },
-      {
-        name: 'Elem_3',
-        link: '#'
-      }
-    ]
-
-    this.state.footer = [
-      {
-        name: 'Elem_1',
-        link: '#'
-      },
-      {
-        name: 'Elem_2',
-        link: '#'
-      },
-      {
-        name: 'Elem_3',
-        link: '#'
-      }
-    ]
   }
 
+  load_data() {
+    this._send_axios_get_request('http://127.0.0.1:8000/users', 'users')
+    this._send_axios_get_request('http://127.0.0.1:8000/TODO', 'tasks')
+    this._send_axios_get_request('http://127.0.0.1:8000/projects', 'projects')
+  }
+
+  componentDidMount() {
+    this.load_data()
+  }
   render() {
     return (
       <BrowserRouter>
@@ -88,7 +60,8 @@ class App extends React.Component {
           </nav>
           <Switch>
             <Route exact path="/"
-              component={() => <UserList users={this.state.users} projects={this.state.projects} />} />
+              component={() => <UserList key={v4()} users={this.state.users}
+                projects={this.state.projects} />} />
             <Route exact path="/users/:id"
               component={() => <UserDetail users={this.state.users} projects={this.state.projects} />} />
             <Route exact path="/projects"
@@ -99,11 +72,9 @@ class App extends React.Component {
             <Route exact path="/tasks/:id" component={() => <TaskDetail items={this.state.tasks} />} />
             <Redirect from="/users" to="/" />
           </Switch>
-        </div >
-      </BrowserRouter >
+        </div>
+      </BrowserRouter>
     )
   }
 }
-
-
 export default App;
