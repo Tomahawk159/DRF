@@ -4,11 +4,11 @@ from todoapp.models import Project, ToDo
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'name', 'number')
+    list_display = ('pk', 'name',  'created_at', 'updated_at')
     list_filter = ('deleted', 'created_at')
     ordering = ('-pk', 'deleted', 'created_at')
     list_per_page = 20
-    search_fields = ('name', 'number')
+    search_fields = ('name',)
     actions = ('mark_as_delete', 'mark_as_active',)
 
     def mark_as_delete(self, request, queryset):
@@ -24,9 +24,10 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(ToDo)
 class ToDoAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'project', 'creator', 'number', 'body', 'is_active')
+    list_display = ('pk', 'project', 'creator', 'body',
+                    'is_active', 'created_at', 'updated_at')
     list_filter = ('deleted', 'created_at')
     ordering = ('-pk', 'deleted', 'created_at')
     list_per_page = 20
-    search_fields = ('number', 'body')
+    search_fields = ('body', 'project')
     actions = ('mark_as_delete', 'mark_as_active',)
