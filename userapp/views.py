@@ -6,7 +6,7 @@ from userapp.serializers import CustomUserModelSerializer
 
 
 class CustomUserLimitOffsetPaginator(LimitOffsetPagination):
-    default_limit = 20
+    default_limit = 10
 
 
 class CustomUserModelViewSet(GenericViewSet, ListModelMixin, RetrieveModelMixin, UpdateModelMixin):
