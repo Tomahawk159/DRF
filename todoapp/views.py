@@ -6,7 +6,7 @@ from todoapp.filters import ToDoFilter
 
 
 class ProjectLimitOffsetPaginator(LimitOffsetPagination):
-    default_limit = 10
+    default_limit = 20
 
 
 class ToDoLimitOffsetPaginator(LimitOffsetPagination):

@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'mixer',
+    'drf_yasg',
     'userapp',
     'todoapp',
     'graphene_django',
@@ -125,7 +126,8 @@ CORS_ALLOWED_ORIGINS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 100
+    'PAGE_SIZE': 100,
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.QueryParameterVersioning'
 }
 
 GRAPHENE = {
